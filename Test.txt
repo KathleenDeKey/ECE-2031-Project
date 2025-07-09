@@ -1,0 +1,70 @@
+; IODemo.asm
+; Produces a "bouncing" animation on the LEDs.
+; The LED pattern is initialized with the switch state.
+
+ORG 0
+Loop:
+    LOAD   Num
+	ADDI   -64
+	JPOS   Finish
+	LOAD   Num
+	Out    Hex0
+	CALL   Delay
+	LOAD   Num
+	Out    Hex1
+	CALL   Delay
+	LOAD   Num
+	Out    Hex2
+	CALL   Delay
+	LOAD   Num
+	Out    Hex3
+	CALL   Delay
+	LOAD   Num
+	Out    Hex4
+	CALL   Delay
+	LOAD   Num
+	Out    Hex5
+	CALL   Delay
+	LOAD   Num
+	ADDI   1
+	STORE  Num
+	JUMP   Loop
+	
+Finish:
+	LOADI 1
+	OUT   LEDs
+	Jump  Finish
+	
+; To make things happen on a human timescale, the timer is
+; used to delay for half a second.
+Delay:
+	OUT    Timer
+WaitingLoop:
+	IN     Timer
+	ADDI   -5
+	JNEG   WaitingLoop
+	RETURN
+    
+
+; Variables
+RandNum:   DW 0
+Score:     DW 0
+SwitchValue: DW 0
+Value_Copy:     DW 0
+Counter:   DW 0
+Answer:    DW 0
+
+
+; Useful values
+Num:       DW 0
+
+; IO address constants
+Switches:  EQU 000
+LEDs:      EQU 001
+Timer:     EQU 002
+Hex0:      EQU 004
+Hex1:      EQU 005
+Hex2:      EQU 006
+Hex3:      EQU 007
+Hex4:      EQU 008
+Hex5:      EQU 009

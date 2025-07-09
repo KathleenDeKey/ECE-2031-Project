@@ -1,0 +1,49 @@
+WIDTH=16;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+0000: 0827; --     LOAD   Num
+0001: 37C0; -- 	ADDI   -64
+0002: 6819; -- 	JPOS   Finish
+0003: 0827; -- 	LOAD   Num
+0004: 9804; -- 	Out    Hex0
+0005: 801C; -- 	CALL   Delay
+0006: 0827; -- 	LOAD   Num
+0007: 9805; -- 	Out    Hex1
+0008: 801C; -- 	CALL   Delay
+0009: 0827; -- 	LOAD   Num
+000A: 9806; -- 	Out    Hex2
+000B: 801C; -- 	CALL   Delay
+000C: 0827; -- 	LOAD   Num
+000D: 9807; -- 	Out    Hex3
+000E: 801C; -- 	CALL   Delay
+000F: 0827; -- 	LOAD   Num
+0010: 9808; -- 	Out    Hex4
+0011: 801C; -- 	CALL   Delay
+0012: 0827; -- 	LOAD   Num
+0013: 9809; -- 	Out    Hex5
+0014: 801C; -- 	CALL   Delay
+0015: 0827; -- 	LOAD   Num
+0016: 3001; -- 	ADDI   1
+0017: 1027; -- 	STORE  Num
+0018: 5800; -- 	JUMP   Loop
+0019: 1801; -- 	LOADI 1
+001A: 9801; -- 	OUT   LEDs
+001B: 5819; -- 	Jump  Finish
+001C: 9802; -- 	OUT    Timer
+001D: 9002; -- 	IN     Timer
+001E: 37FB; -- 	ADDI   -5
+001F: 601D; -- 	JNEG   WaitingLoop
+0020: 8800; -- 	RETURN
+0021: 0000; -- RandNum:   DW 0
+0022: 0000; -- Score:     DW 0
+0023: 0000; -- SwitchValue: DW 0
+0024: 0000; -- Value_Copy:     DW 0
+0025: 0000; -- Counter:   DW 0
+0026: 0000; -- Answer:    DW 0
+0027: 0000; -- Num:       DW 0
+[0028..07FF] : 0000; -- [empty memory]
+END;
