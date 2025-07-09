@@ -1,0 +1,95 @@
+WIDTH=16;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+0000: 1800; -- 	LOADI  0
+0001: 104C; --     STORE  RandNum
+0002: 104D; --     STORE  Score
+0003: 1800; -- 	LOADI  0
+0004: 104C; --     STORE  RandNum
+0005: 9000; -- 	IN     Switches
+0006: 7008; --  	JZERO  Switch9Up
+0007: 5805; --     JUMP   CheckAllSwitchesDown
+0008: 9000; -- 	IN     Switches
+0009: 3853; --     AND    Bit9
+000A: 680F; --     JPOS   CalcRandNum
+000B: 084C; --     LOAD   RandNum
+000C: 3001; --     ADDI   1
+000D: 104C; --     STORE  RandNum
+000E: 5808; --     JUMP   Switch9Up
+000F: 084C; --     LOAD   RandNum
+0010: 3854; --     AND    BitLow
+0011: 7014; --     JZERO  SetOne
+0012: 104C; --     STORE  RandNum
+0013: 5816; --     JUMP   SetLEDDisplay
+0014: 1801; -- 	LOADI  1
+0015: 104C; --     STORE  RandNum
+0016: 9000; -- 	IN     Switches
+0017: 9801; --     OUT    LEDs
+0018: 084C; --     LOAD   RandNum
+0019: 9804; --     OUT    hex0
+001A: 084D; --     LOAD   Score
+001B: 9805; --     OUT    hex1
+001C: 9000; -- 	IN     Switches
+001D: 3855; --     AND    MaskBit9
+001E: 701C; --     JZERO  CheckSwitchUp
+001F: 4053; --     OR     Bit9
+0020: 9801; -- 	OUT    LEDs
+0021: 104E; --     STORE  SwitchValue
+0022: 084C; --     LOAD   RandNum
+0023: 8038; --     CALL   FindLowestSetBit
+0024: 1051; --     STORE  Answer
+0025: 084E; --     LOAD   SwitchValue
+0026: 8038; --     CALL   FindLowestSetBit
+0027: 2851; --     SUB    Answer
+0028: 702D; --     JZERO  IncrementScore
+0029: 1800; -- 	LOADI  0
+002A: 104D; --     STORE  Score
+002B: 9805; --     OUT    hex1
+002C: 5832; --     JUMP   Finish
+002D: 084D; -- 	LOAD   Score
+002E: 3001; --     ADDI   1
+002F: 104D; --     STORE  Score
+0030: 9805; --     OUT    hex1
+0031: 5832; --     JUMP   Finish
+0032: 5803; -- 	JUMP   InitializeVar
+0033: 9802; -- 	OUT    Timer
+0034: 9002; -- 	IN     Timer
+0035: 37FB; -- 	ADDI   -5
+0036: 6034; -- 	JNEG   WaitingLoop
+0037: 8800; -- 	RETURN
+0038: 104F; --     STORE Value_Copy
+0039: 1800; --     LOADI 0
+003A: 1050; --     STORE Counter
+003B: 084F; -- 	LOAD  Value_Copy
+003C: 3852; --     AND   Bit0
+003D: 6848; --     JPOS  Found
+003E: 0850; -- 	LOAD  Counter
+003F: 37F0; --     ADDI  -16
+0040: 704A; --     JZERO NotFound
+0041: 0850; --     LOAD  Counter
+0042: 3001; --     ADDI  1
+0043: 1050; --     STORE Counter
+0044: 084F; --     LOAD  Value_Copy
+0045: 5011; --     SHIFT -1
+0046: 104F; --     STORE Value_Copy
+0047: 583B; -- 	JUMP  Loop
+0048: 0850; -- 	LOAD  Counter
+0049: 8800; --     RETURN
+004A: 1FFF; -- 	LOADI -1
+004B: 8800; --     RETURN
+004C: 0000; -- RandNum:   DW 0
+004D: 0000; -- Score:     DW 0
+004E: 0000; -- SwitchValue: DW 0
+004F: 0000; -- Value_Copy:     DW 0
+0050: 0000; -- Counter:   DW 0
+0051: 0000; -- Answer:    DW 0
+0052: 0001; -- Bit0:      DW &B0000000001
+0053: 0200; -- Bit9:      DW &B1000000000
+0054: 00FF; -- BitLow:    DW &H00FF
+0055: 01FF; -- MaskBit9:  DW &B0111111111
+[0056..07FF] : 0000; -- [empty memory]
+END;

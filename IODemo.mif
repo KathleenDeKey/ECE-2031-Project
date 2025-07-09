@@ -1,0 +1,92 @@
+WIDTH=16;
+DEPTH=2048;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+0000: 9000; -- 	IN     Switches
+0001: 104F; --     STORE  SwitchValue
+0002: 104C; --  	STORE  Value
+0003: 8036; --     CALL   FindLowestSetBit
+0004: 6000; --     JNEG   Start
+0005: 104E; --     STORE  Result
+0006: 1800; --     LOADI  0
+0007: 3001; --     ADDI   1
+0008: 1050; --     STORE  SwitchCounter
+0009: 084C; --     LOAD   Value
+000A: 5011; --     SHIFT  -1
+000B: 104C; --     STORE  Value
+000C: 084E; --     LOAD   Result
+000D: 37FF; --     ADDI   -1
+000E: 104E; --     STORE  Result
+000F: 6011; --     JNEG   FindNext
+0010: 5809; --     JUMP   Shift
+0011: 084C; --     LOAD   Value
+0012: 8036; --     CALL   FindLowestSetBit
+0013: 6019; --     JNEG   CheckNumSwitch
+0014: 104E; --     STORE  Result
+0015: 0850; --     LOAD   SwitchCounter
+0016: 3001; --     ADDI   1
+0017: 1050; --     STORE  SwitchCounter
+0018: 5809; --     JUMP   Shift
+0019: 0850; -- 	LOAD SwitchCounter
+001A: 37FE; --     ADDI -2
+001B: 6800; --     JPOS Start
+001C: 084F; -- 	LOAD   SwitchValue
+001D: 9801; -- 	OUT    LEDs
+001E: 104A; -- 	STORE  Pattern
+001F: 8031; -- 	CALL   Delay
+0020: 084A; -- 	LOAD   Pattern
+0021: 3852; -- 	AND    Bit9         ; bit mask
+0022: 7828; -- 	JNZ    Right        ; bit9 is 1; go right
+0023: 084A; -- 	LOAD   Pattern
+0024: 5001; -- 	SHIFT  1
+0025: 104A; -- 	STORE  Pattern
+0026: 9801; -- 	OUT    LEDs
+0027: 581F; -- 	JUMP   Left
+0028: 8031; -- 	CALL   Delay
+0029: 084A; -- 	LOAD   Pattern
+002A: 3851; -- 	AND    Bit0         ; bit mask
+002B: 781F; -- 	JNZ    Left         ; bit0 is 1; go left
+002C: 084A; -- 	LOAD   Pattern
+002D: 5011; -- 	SHIFT  -1
+002E: 104A; -- 	STORE  Pattern
+002F: 9801; -- 	OUT    LEDs
+0030: 5828; -- 	JUMP   Right
+0031: 9802; -- 	OUT    Timer
+0032: 9002; -- 	IN     Timer
+0033: 37FB; -- 	ADDI   -5
+0034: 6032; -- 	JNEG   WaitingLoop
+0035: 8800; -- 	RETURN
+0036: 104D; --     STORE Value_Copy
+0037: 1800; --     LOADI 0
+0038: 104B; --     STORE Counter
+0039: 084D; -- 	LOAD  Value_Copy
+003A: 3851; --     AND   Bit0
+003B: 6846; --     JPOS  Found
+003C: 084B; -- 	LOAD  Counter
+003D: 37F0; --     ADDI  -16
+003E: 7048; --     JZERO NotFound
+003F: 084B; --     LOAD  Counter
+0040: 3001; --     ADDI  1
+0041: 104B; --     STORE Counter
+0042: 084D; --     LOAD  Value_Copy
+0043: 5011; --     SHIFT -1
+0044: 104D; --     STORE Value_Copy
+0045: 5839; -- 	JUMP  Loop
+0046: 084B; -- 	LOAD  Counter
+0047: 8800; --     RETURN
+0048: 1FFF; -- 	LOADI -1
+0049: 8800; --     RETURN
+004A: 0000; -- Pattern:   DW 0
+004B: 0000; -- Counter:   DW 0
+004C: 0000; -- Value: 	   DW 0
+004D: 0000; -- Value_Copy: DW 0
+004E: 0000; -- Result:    DW 0
+004F: 0000; -- SwitchValue: DW 0
+0050: 0000; -- SwitchCounter: DW 0
+0051: 0001; -- Bit0:      DW &B0000000001
+0052: 0200; -- Bit9:      DW &B1000000000
+[0053..07FF] : 0000; -- [empty memory]
+END;
